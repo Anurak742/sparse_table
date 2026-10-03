@@ -34,3 +34,10 @@ The operation must be **idempotent** — `op(x, x) == x`. The query answers by c
 ## Exported names
 
 - `SparseTable` — the only public class. Constructor: `SparseTable(data, op, *, value=identity)`. Method: `query(l, r)`. Property: `n`.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
